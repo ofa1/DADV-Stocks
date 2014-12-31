@@ -1,0 +1,59 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script
+	src="http://cdn.rawgit.com/jpillora/xdomain/0.6.17/dist/xdomain.min.js"
+	slave="http://localhost:8983/solr/proxy.html"></script>
+<script src="js/jquery-1.11.2.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/chosen.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/chosen.jquery.js"></script>
+<script type="text/javascript" src="companyhistory.js"></script>
+<title>Stock Analysis</title>
+</head>
+<body>
+	<div class="container">
+		<h1>Welcome to Stock Analysis</h1>
+		<ul class="nav nav-pills">
+			<li role="presentation"><a href="#">LIVE Stocks</a></li>
+			<li role="presentation"><a href="#">Top 10 Gainers</a></li>
+			<li role="presentation" class="active"><a href="#">Company
+					History</a></li>
+		</ul>
+		<div class="container">
+			<div class="ui-widget">
+
+				<select id="combobox" data-placeholder="Choose a company..."
+					class="chosen-select">
+					<option>Select company name...</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// populate the company names
+		$.getJSON('http://localhost:8983/solr/collection1/select?q=*%3A*&rows=0&wt=json&indent=true&facet=true&facet.field=SC_NAME',
+						function(data) {
+							dd = data.facet_counts.facet_fields.SC_NAME
+							// console.log(dd.length)
+							for (i = 0; i < dd.length; i++)
+								if (isNaN(dd[i])) {
+									$('#combobox').append(
+											'<option>' + dd[i] + '</option>')
+								}
+							//$("#combobox").chosen() //Initialize the searchable dropdown
+							$("#combobox").trigger("chosen:updated");
+						});
+	// Perform action when company selected
+		$("#combobox").chosen().change(function() {
+			selectedCompany = $('#combobox option:selected').text();'
+			console.log(selectedCompany)
+		});
+	</script>
+</body>
+</html>
