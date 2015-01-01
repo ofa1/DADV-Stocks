@@ -17,18 +17,19 @@ import pysolr
 url = "http://www.bseindia.com/download/BhavCopy/Equity/" # EQ231214_CSV.ZIP
 dir = "data/"
 
-a = date(2014, 10, 23)
-b = date(2014, 12, 23)
+a = date(2013, 1, 1)
+b = date(2014, 12, 31)
 
-print "Downloading files between "+a.isoformat()+" and "+a.isoformat()
+print "Downloading files between "+a.isoformat()+" and "+b.isoformat()
 delta = datetime.timedelta(days=1)  #Date Delta (increment) = 1 day
 while a <= b:
     a += delta  #Increase a by one day
     try:
         if a.weekday() < 5: #ignore all weekends
-            fileN = "EQ" + d.strftime("%d%m%y") + "_CSV.ZIP"
+            fileN = "EQ" + a.strftime("%d%m%y") + "_CSV.ZIP"
             zipfilepath = dir+"zips/"+fileN;
             if not os.path.exists(zipfilepath): # If file not already present
+                print "Downloading:",a
                 urllib.urlretrieve('http://www.bseindia.com/download/BhavCopy/Equity/'+fileN, zipfilepath)
                 ffile=open(zipfilepath,'rb')    #open and unzip the CSV inside
                 zipping=ZipFile(ffile)
@@ -52,20 +53,20 @@ for fileN in os.listdir(fileDirectory+"output/"):
 print "Indexing each file to Solr"
 s = pysolr.Solr('http://localhost:8983/solr/collection1')   #Establish conn to Solr
 
-s.delete(q='*:*') # DELETE ALL records currently indexed 
+# s.delete(q='*:*') # DELETE ALL records currently indexed 
 i = 0
 for eachfile in fileNames:
     reader = csv.DictReader(open(dir+"output/"+eachfile,"rb"))
     listOfAllRows = []
     for row in reader:
         row['SC_NAME'] = row['SC_NAME'].strip()
-        d = datetime.datetime.strptime( eachfile[2:-4], "%d%m%y" )  #Parse date
+        d = datetime.datetime.strptime( eachfile[2:8], "%d%m%y" )  #Parse date
         row['id'] = str(row['SC_CODE']+d.isoformat()) # creating 'unique' id for each record(document) -> Company Code + Date
         row['DATE'] = str(d.isoformat()+'Z') # formatting date according to Solr format
         listOfAllRows.append(row)
     i = i+ len(listOfAllRows)
     s.add(listOfAllRows)    #Add all rows to Solr index
-    print i
+    print i,eachfile
 s.optimize()
 print "Indexing finished"
 

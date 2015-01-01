@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<script src="http://cdn.rawgit.com/jpillora/xdomain/0.6.17/dist/xdomain.min.js" slave="http://localhost:8983/solr/proxy.html"></script>
-<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="http://github.highcharts.com/bdf6471/highcharts.js"></script>
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-<!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="js/xdomain.min.js" slave="http://localhost:8983/solr/proxy.html"></script>
+<script src="js/jquery-1.11.2.min.js"></script>
+<script src="js/highcharts.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<script	src="js/bootstrap.min.js"></script>
 <title>Stock Analysis</title>
 </head>
 <body>
 	<div class="container">
-		<h1>Welcome to Stock Analysis</h1>
+		<h1>Stock Analysis</h1>
 		<ul class="nav nav-pills">
-			<li role="presentation" ><a href="#">LIVE	Stocks</a></li>
+			<li role="presentation" ><a href="index.html">LIVE Stocks</a></li>
 			<li role="presentation" class="active"><a href="#">Top 10 Gainers</a></li>
-			<li role="presentation"><a href="#">Company History</a></li>
+			<li role="presentation"><a href="CompanyHistory.html">Company History</a></li>
 		</ul>
 		<div id="container1" style="height: 400px; min-width: 310px">
 			<script type="text/javascript">
